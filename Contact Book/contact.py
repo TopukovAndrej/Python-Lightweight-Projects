@@ -1,4 +1,5 @@
 import os
+import re
 from datetime import datetime
 
 
@@ -7,11 +8,12 @@ class Contact:
     A class for creating contacts. Contacts contain the following information: name, surname, phone, email and date and
     time when the contact was added.
     """
+
     def __init__(self, *args, **kwargs):
         """
         The constructor for the Contact class. Can be used with *args, **kwargs or a combination of both. Raises
         Exception and Errors where needed. Currently it does not validate user input
-        (Method is complicated since I wanted to experiment with args and kwargs)
+        (Method is complicated because I wanted to experiment with args and kwargs)
 
         :param args: arguments for the constructor in tuple format
         :param kwargs: arguments for the constructor in dictionary format
@@ -31,16 +33,17 @@ class Contact:
             except KeyError:
                 raise Exception('Not all data is given to the Contact constructor. '
                                 'Constructor requests: name, surname, phone '
-                      'and email. All data must be of str type. Also, incorrect keyword arguments may be given.')
+                                'and email. All data must be of str type. Also, incorrect keyword arguments may be '
+                                'given.')
         elif len(args) != 0 and not kwargs:
             if len(args) < 4:
                 raise Exception('Not all data is given to the Contact constructor. '
                                 'Constructor requests: name, surname, phone '
-                      'and email. All data must be of str type.')
+                                'and email. All data must be of str type.')
             elif len(args) > 4:
                 raise Exception('Too much data is given to the Contact constructor. '
                                 'Constructor requests: name, surname, phone '
-                      'and email. All data must be of str type.')
+                                'and email. All data must be of str type.')
             else:
                 self._name = args[0]
                 self._surname = args[1]
@@ -267,6 +270,7 @@ class Contact:
         :param self: the Contact instance that calls this method
         :type self: Contact
         :returns: the 'name' attribute of the calling Contact instance
+        :rtype: str
         """
         return self._name
 
@@ -277,6 +281,7 @@ class Contact:
         :param self: the Contact instance that calls this method
         :type self: Contact
         :returns: the 'surname' attribute of the calling Contact instance
+        :rtype: str
         """
         return self._surname
 
@@ -287,6 +292,7 @@ class Contact:
         :param self: the Contact instance that calls this method
         :type self: Contact
         :returns: the 'phone' attribute of the calling Contact instance
+        :rtype: str
         """
         return self._phone
 
@@ -297,6 +303,7 @@ class Contact:
         :param self: the Contact instance that calls this method
         :type self: Contact
         :returns: the 'email' attribute of the calling Contact instance
+        :rtype: str
         """
         return self._email
 
@@ -307,24 +314,108 @@ class Contact:
         :param self: the Contact instance that calls this method
         :type self: Contact
         :returns: the 'added_on' attribute of the calling Contact instance
+        :rtype: str
         """
         return self._added_on
 
     def write_to_txt_file(self, file_path: str):
         """
-        Writes the Contact object in the specified file. If file does not exist, the method throws a FileNotFoundError
+        Writes the Contact object in the specified file. If the file does not exist, the method raises a
+        FileNotFoundError
 
         :param file_path: absolute or relative file path to the file where the object should be written
         :type file_path: str
         :returns: None
         """
         s = self._name + ' ' + self._surname + '    ' + self._phone + '    ' + self._email + '    ' + self._added_on
-        if os.path.exists(file_path):
+        if os.path.isfile(file_path):
             with open(file_path, mode='a') as datafile:
                 datafile.write(s + '\n')
             return None
         else:
             raise FileNotFoundError('File does not exist')
+
+    def is_contact_email_valid(self):
+        """
+        Checks whether the contact's email address is valid using regex
+
+        :param self: the Contact instance that calls this method
+        :type self: Contact
+        :returns:
+            - True if the contact's email is a valid email address (valid by regex)
+            - False otherwise
+        """
+        result = re.match(pattern=r'\w+\.?\w+\.?\w+@\w+\.com', string=self._email)
+        if result is None:
+            return False
+        else:
+            return True
+
+    def is_contact_name_valid(self):
+        """
+        Checks whether the contact's name is valid. A valid name is a name that contains more than 3 characters
+
+        :param self: the Contact instance that calls this method
+        :type self: Contact
+        :returns:
+            - True if the contact's name is valid
+            - False otherwise
+        """
+        result = re.match(pattern=r'\w{3,}', string=self._name)
+        if result is None:
+            return False
+        else:
+            return True
+
+    def is_contact_phone_valid(self):
+        """
+        Checks whether the contact's phone number is valid. A valid phone number is of the format: +xxx xx xxx xxx
+
+        :param self: the Contact instance that calls this method
+        :type self: Contact
+        :returns:
+            - True if the contact's phone number is valid
+            - False otherwise
+        """
+        result = re.match(pattern=r'^\+\d{3}\s\d{2}\s\d{3}\s\d{3}', string=self._phone)
+        if result is None:
+            return False
+        else:
+            return True
+
+    def is_contact_surname_valid(self):
+        """
+        Checks whether the contact's surname is valid. A valid surname is a surname that contains at least 3 characters
+        (Just like the name)
+
+        :param self: the Contact instance that calls this method
+        :type self: Contact
+        :returns:
+            - True if the contact's surname is valid
+            - False otherwise
+        """
+        result = re.match(pattern=r'\w{3,}', string=self._surname)
+        if result is None:
+            return False
+        else:
+            return True
+
+    def write_str_to_txt_file(self, file_path: str):
+        """
+        Writes the contact in the specified .txt file using the __str__() method. Raises FileNotFoundError if the file
+        does not exist
+
+        :param self: the Contact instance that calls this method
+        :type self: Contact
+        :param file_path: absolute or relative path to the .txt file
+        :type file_path: str
+        :returns: None
+        """
+        if not os.path.isfile(file_path):
+            raise FileNotFoundError
+        else:
+            with open(file_path, mode='a') as datafile:
+                datafile.write(str(self))
 
     def __str__(self):
         """
@@ -370,9 +461,10 @@ class Contact:
 if __name__ == '__main__':
     c = Contact('Sample', 'Sample2', '111222333', email='test@test.com')
     c2 = Contact('Sample2', 'Sample3', '123456789', 'asdasd@dsas.com')
-    print(c == c2)
+    c3 = Contact('a', 'bc', '+111 111 222', 'test')
+    # print(c == c2)
     # c21 = Contact('1', '2', '3', '4', '5', '6')
-    c22 = Contact('1')
-
-    c3 = Contact()
-    print(c3.get_contact_surname())
+    print(c3.is_contact_name_valid())
+    print(c3.is_contact_phone_valid())
+    print(c3.is_contact_email_valid())
+    print(c3.is_contact_surname_valid())
