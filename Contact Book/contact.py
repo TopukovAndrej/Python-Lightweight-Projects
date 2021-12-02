@@ -251,8 +251,6 @@ class Contact:
         """
         Checks whether all attributes are of type string
 
-        :param self: the Contact instance that calls this method
-        :type self: Contact
         :returns:
             - True if all object attributes are of type string
             - False otherwise
@@ -267,8 +265,6 @@ class Contact:
         """
         Returns the contact's name
 
-        :param self: the Contact instance that calls this method
-        :type self: Contact
         :returns: the 'name' attribute of the calling Contact instance
         :rtype: str
         """
@@ -278,8 +274,6 @@ class Contact:
         """
         Returns the contact's surname
 
-        :param self: the Contact instance that calls this method
-        :type self: Contact
         :returns: the 'surname' attribute of the calling Contact instance
         :rtype: str
         """
@@ -289,8 +283,6 @@ class Contact:
         """
         Returns the contact's phone number
 
-        :param self: the Contact instance that calls this method
-        :type self: Contact
         :returns: the 'phone' attribute of the calling Contact instance
         :rtype: str
         """
@@ -300,8 +292,6 @@ class Contact:
         """
         Returns the contact's email
 
-        :param self: the Contact instance that calls this method
-        :type self: Contact
         :returns: the 'email' attribute of the calling Contact instance
         :rtype: str
         """
@@ -311,8 +301,6 @@ class Contact:
         """
         Returns when the contact was added in the contact book
 
-        :param self: the Contact instance that calls this method
-        :type self: Contact
         :returns: the 'added_on' attribute of the calling Contact instance
         :rtype: str
         """
@@ -339,8 +327,6 @@ class Contact:
         """
         Checks whether the contact's email address is valid using regex
 
-        :param self: the Contact instance that calls this method
-        :type self: Contact
         :returns:
             - True if the contact's email is a valid email address (valid by regex)
             - False otherwise
@@ -355,8 +341,6 @@ class Contact:
         """
         Checks whether the contact's name is valid. A valid name is a name that contains more than 3 characters
 
-        :param self: the Contact instance that calls this method
-        :type self: Contact
         :returns:
             - True if the contact's name is valid
             - False otherwise
@@ -371,8 +355,6 @@ class Contact:
         """
         Checks whether the contact's phone number is valid. A valid phone number is of the format: +xxx xx xxx xxx
 
-        :param self: the Contact instance that calls this method
-        :type self: Contact
         :returns:
             - True if the contact's phone number is valid
             - False otherwise
@@ -388,8 +370,6 @@ class Contact:
         Checks whether the contact's surname is valid. A valid surname is a surname that contains at least 3 characters
         (Just like the name)
 
-        :param self: the Contact instance that calls this method
-        :type self: Contact
         :returns:
             - True if the contact's surname is valid
             - False otherwise
@@ -400,29 +380,10 @@ class Contact:
         else:
             return True
 
-    def write_str_to_txt_file(self, file_path: str):
-        """
-        Writes the contact in the specified .txt file using the __str__() method. Raises FileNotFoundError if the file
-        does not exist
-
-        :param self: the Contact instance that calls this method
-        :type self: Contact
-        :param file_path: absolute or relative path to the .txt file
-        :type file_path: str
-        :returns: None
-        """
-        if not os.path.isfile(file_path):
-            raise FileNotFoundError
-        else:
-            with open(file_path, mode='a') as datafile:
-                datafile.write(str(self))
-
     def __str__(self):
         """
         Overrides the __str__ method for the Contact class
 
-        :param self: the Contact instance that calls this method
-        :type self: Contact
         :return s: a string representation of the Contact object
         :rtype: str
         """
@@ -440,8 +401,6 @@ class Contact:
         """
         Overrides the __eq__ method for the Contact class
 
-        :param self: the Contact instance that calls this method
-        :type self: Contact
         :param other: an object to be tested for equality with the Contact instance that calls this method
         :type other: Any
         :returns:
