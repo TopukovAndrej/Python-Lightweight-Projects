@@ -59,12 +59,12 @@ class ContactBook:
 
         :param key: the key by which the sorting should be done
         :type key: str
-        :param flag: flag which tells us whether to sort the elements in ascending or descending order
+        :param flag: flag which tells us whether to sort the elements in ascending (False) or descending (True) order
         :type flag: bool
         :returns: None
         """
         assert key == 'name' or key == 'surname' or key == 'phone' or key == 'email'
-        self._contacts.sort(key=key, reversed=flag)
+        self._contacts.sort(key=lambda contact: contact.key, reversed=flag)
 
     def write_contacts_to_txt_file(self, file_path: str):
         """
@@ -81,6 +81,27 @@ class ContactBook:
             return None
         else:
             raise Exception('File does not exist')
+
+    def read_contacts_from_txt_file(self, file_path: str):
+        """
+        Reads the contacts from the .txt file. Also, checks whether a string represents a contact
+        (String must be the same as the way contacts are written in the file, not like the __str__() method of the
+        Contact class)
+        If file does not exist, raises a FileNotFoundException
+
+        :returns: None
+        """
+        if os.path.isfile(file_path):
+            with open(file_path, mode='r') as datafile:
+                for line in datafile.readlines():
+                    text = line.rstrip('\n').split(r'\s+')
+                    try:
+                        c = Contact(text[0], text[1], text[2], text[3])
+                    except Exception or TypeError:
+                        print('Invalid contact format. See Contact class\' write_to_file() method')
+                    self._contacts.append(c)
+        else:
+            raise FileNotFoundError('File does not exist')
 
     @staticmethod
     def check_data_type(li: list):

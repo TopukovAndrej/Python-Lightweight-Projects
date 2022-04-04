@@ -16,6 +16,7 @@ from tkinter import OptionMenu
 def convert_binary_to_decimal(binary_number: str):
     """
     Converts the binary number to decimal number
+
     :param binary_number: a binary number
     :type binary_number: str
     :return: the number in decimal numeral system
@@ -39,6 +40,7 @@ def convert_binary_to_decimal(binary_number: str):
 def convert_decimal_to_binary(decimal_number: str):
     """
     Converts the decimal number to binary number
+
     :param decimal_number: a decimal number
     :type decimal_number: str
     :return: the number in binary numeral system
@@ -64,6 +66,7 @@ def convert_decimal_to_binary(decimal_number: str):
 def is_binary_number_valid(number: str):
     """
     Function checks whether the binary number is valid (checks whether all digits are 0s and 1s)
+
     :param number: the binary number in string format
     :type number: str
     :return: True if the number is valid, False otherwise

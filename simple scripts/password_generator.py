@@ -15,7 +15,8 @@ def generate_button_click():
     """
     Validates the user input and generates passwords accordingly.
     If input(s) is/are invalid, an error message is shown.
-    :return: None
+
+    :returns: None
     """
     text_box_5.delete(1.0, END)
     text_box_6.delete(1.0, END)
